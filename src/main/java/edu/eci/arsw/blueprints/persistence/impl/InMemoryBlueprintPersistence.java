@@ -45,7 +45,13 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
     @Override
     public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
-        return blueprints.get(new Tuple<>(author, bprintname));
+        Blueprint bp = blueprints.get(new Tuple<>(author, bprintname));
+        if (bp == null){
+            throw new  BlueprintNotFoundException("Not found BluePrint from this author or this Blueprint name");
+        }else {
+           return bp;
+        }
+
     }
 
 
@@ -61,12 +67,26 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         }
         if (authorBp.isEmpty()){
             throw new  BlueprintNotFoundException("Not found BluePrint from this author.");
+        }else{
+            return authorBp;
+
         }
 
-        return authorBp;
 
     }
 
-    
-    
+    public Set<Blueprint> getAllBlueprint() throws BlueprintNotFoundException{
+        Set<Blueprint> allBluePrints = new HashSet<>(blueprints.values());
+
+        if (allBluePrints.isEmpty()){
+            throw new BlueprintNotFoundException("Not found BluePrint from this author.");
+        }else {
+            return allBluePrints;
+        }
+
+    }
+
+
+
+
 }
